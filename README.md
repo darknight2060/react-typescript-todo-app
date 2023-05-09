@@ -1,3 +1,3 @@
 # react-typescript-todo-app
 
-[tikla](https://react-ts-todo.vercel.app)
+[Go to project](https://react-ts-todo-esv56cryd-null313.vercel.app/)
