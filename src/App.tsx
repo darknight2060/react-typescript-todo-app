@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef, KeyboardEvent } from 'react'
+import { useState, useCallback, KeyboardEvent } from 'react'
 import { useHotkeys } from 'react-hotkeys-hook'
 
 interface TodoProps {
