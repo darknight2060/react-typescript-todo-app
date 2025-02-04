@@ -6,6 +6,6 @@
 
 @layer base {
 	html, body, #root {
-		@apply bg-black text-white w-full h-full font-space-grotesk outline-none
+		@apply bg-gray-800 text-white w-full h-full font-space-grotesk outline-none
 	}
 }
