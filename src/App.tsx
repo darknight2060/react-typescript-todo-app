@@ -1,4 +1,4 @@
-import { useState, KeyboardEvent } from 'react'
+import { useState, useEffect, KeyboardEvent } from 'react'
 import { useHotkeys } from 'react-hotkeys-hook'
 
 type Todo = {
@@ -55,7 +55,21 @@ const App = () => {
   const [todos, setTodos] = useState<Array<Todo>>([])
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [inputTodoName, setInputTodoName] = useState<string>('')
-  
+
+  // Load todo list from localStorage
+  useEffect(() => {
+    const storedTodos = localStorage.getItem('todos')
+    if (storedTodos) {
+      console.log(JSON.parse(storedTodos))
+      setTodos(JSON.parse(storedTodos))
+    }
+  }, [])
+
+  // When list changes, update localStorage
+  useEffect(() => {
+    if (todos.length > 0) localStorage.setItem('todos', JSON.stringify(todos))
+  }, [todos])
+
   const addNewTodo = () => {
     if (inputTodoName) {
       setTodos([...todos, { title: inputTodoName, id: todos.length + 1 }])
