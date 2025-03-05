@@ -3,31 +3,31 @@ import { useHotkeys } from 'react-hotkeys-hook'
 
 type Todo = {
   id: number
-  title: string
+  title: string,
+  isDone?: boolean
 }
 
 interface TodoProps {
   className?: string
   todo: Todo
-  deleteFunc: Function
+  deleteFunc: Function,
+  toggleDone: Function
 }
 
-const Todo = ({ className, todo, deleteFunc }: TodoProps) => {
-  const [isDone, setIsDone] = useState<boolean>(false)
+const Todo = ({ className, todo, deleteFunc, toggleDone }: TodoProps) => {
   return (
     <div className='flex gap-x-1' id={`${todo.id}`}>
       <div
-        onClick={() => setIsDone(prev => !prev)}
+        onClick={() => toggleDone(todo)}
         className={
           className +
           ' border-2 border-white py-1 px-2 rounded-md flex justify-start cursor-pointer'
         }
       >
-        <span className={`${isDone && 'line-through'} hover:line-through`}>
+        <span className={`${todo.isDone && 'line-through'} hover:line-through`}>
           {todo.title}
         </span>
       </div>
-      {/* trash bin */}
       <div
         className='border-2 border-white py-1 px-2 rounded-md flex justify-center items-center cursor-pointer'
         onClick={() => deleteFunc(todo)}
@@ -67,8 +67,18 @@ const App = () => {
 
   // When list changes, update localStorage
   useEffect(() => {
-    if (todos.length > 0) localStorage.setItem('todos', JSON.stringify(todos))
-  }, [todos])
+    if (todos.length > 0)
+      localStorage.setItem('todos', JSON.stringify(todos));
+    else
+      localStorage.removeItem('todos');
+  }, [todos]);
+
+  const handleToggleDone = (todo: Todo) => {
+    const updatedTodos = todos.map(t =>
+      t.id === todo.id ? { ...t, isDone: !t.isDone } : t
+    )
+    setTodos(updatedTodos)
+  }  
 
   const addNewTodo = () => {
     if (inputTodoName) {
@@ -160,6 +170,7 @@ const App = () => {
                 <Todo
                   todo={todo}
                   deleteFunc={handleDelete}
+                  toggleDone={handleToggleDone}
                 />
               ))}
             </span>
